@@ -13,22 +13,44 @@ block
     ;
 
 statement
-    : assignment;
+    : variableAssignment
+    ;
+
+variableAssignment
+    : variableModifier? WS* IDENTIFIER WS* assignment?
+    ;
 
 assignment
-    : IDENTIFIER ASSIGN expression
+    : (ASSIGN WS* expression)
     ;
 
 expression
     : INTEGER #integerExpression
     ;
 
+variableModifier
+    : CONST
+    | VAR
+    ;
+
 ASSIGN
     : '='
     ;
 
+CONST
+    : 'const'
+    ;
+
+VAR
+    : 'var'
+    ;
+
 IDENTIFIER
-    : [a-zA-Z_] [a-zA-Z0-9]*
+    : (LETTER | '_') (LETTER | '_' | DIGIT)*
+    ;
+
+LETTER
+    : [a-zA-Z]
     ;
 
 INTEGER
