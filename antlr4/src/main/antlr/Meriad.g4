@@ -14,6 +14,11 @@ block
 
 statement
     : variableAssignment
+    | outputAssignment
+    ;
+
+outputAssignment
+    : OUTPUT WS* IDENTIFIER WS* assignment?
     ;
 
 variableAssignment
@@ -35,6 +40,10 @@ variableModifier
 
 ASSIGN
     : '='
+    ;
+
+OUTPUT
+    : 'output'
     ;
 
 CONST
