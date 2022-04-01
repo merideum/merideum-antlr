@@ -9,7 +9,7 @@ parse
     ;
 
 block
-    : ( statement)*
+    : (statement)*
     ;
 
 statement
