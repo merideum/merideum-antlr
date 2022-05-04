@@ -31,4 +31,4 @@ jobs:
         build-root-directory: /jvm
         gradle-version: wrapper
     - name: Execute Gradle build
-      run: cd /jvm/ && ./gradlew build
+      run: cd ./jvm/ && ./gradlew build
