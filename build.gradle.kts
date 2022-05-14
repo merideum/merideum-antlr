@@ -13,13 +13,9 @@ dependencies {
 
 group = "org.merideum"
 
-repositories {
-  mavenCentral()
-}
+repositories { mavenCentral() }
 
-tasks.generateGrammarSource {
-  arguments = arguments + listOf("-visitor")
-}
+tasks.generateGrammarSource { arguments = arguments + listOf("-visitor") }
 
 publishing {
   publications {
