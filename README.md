@@ -5,7 +5,7 @@ Merit is used to power interaction with a Merideum server.
 
 # Getting Started
 
-This project is organized as a JVM project due to the powerful and helpful ANTLR4 plugin in IntelliJ.
-This plugin is used to develop and test the grammar implementation.
+It is recommended to open this project in IntelliJ due to the powerful and useful ANTLR plugin.
+This plugin is used to visualize the grammar and test grammar changes manually.
 
 Language-specific implementations of Merideum should curl the grammar file(s) from the desired git tag to generate their ANTLR language target (instead of committing the file(s) to source control).
