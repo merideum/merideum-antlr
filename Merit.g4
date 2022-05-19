@@ -2,7 +2,9 @@ grammar Merit;
 
 parse: block EOF;
 
-block: (statement)*;
+block: (importDependency)*? WS* (statement)*;
+
+importDependency: IMPORT WS* IDENTIFIER WS* COLON WS* DEPENDENCY_NAME;
 
 statement: variableAssignment | outputAssignment;
 
@@ -17,6 +19,8 @@ expression: INTEGER # integerExpression;
 
 variableModifier: CONST | VAR;
 
+IMPORT: 'import';
+
 ASSIGN: '=';
 
 OUTPUT: 'output';
@@ -25,7 +29,13 @@ CONST: 'const';
 
 VAR: 'var';
 
+DEPENDENCY_NAME: (CAPITAL_LETTER) (LETTER | '_' | DIGIT)*;
+
 IDENTIFIER: (LETTER | '_') (LETTER | '_' | DIGIT)*;
+
+COLON: ':';
+
+CAPITAL_LETTER: [A-Z];
 
 LETTER: [a-zA-Z];
 
