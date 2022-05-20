@@ -2,26 +2,47 @@ grammar Merit;
 
 parse: block EOF;
 
-block: (importDependency)*? WS* (statement)*;
+block: (importDependency)* WS* (statement)*;
 
-importDependency: IMPORT WS* IDENTIFIER WS* COLON WS* DEPENDENCY_NAME;
+importDependency: IMPORT WS* IDENTIFIER WS* COLON WS* (dependencyPathIdentifier)? (DEPENDENCY_NAME);
 
-statement: variableAssignment | outputAssignment;
+statement
+    : variableAssignment | outputAssignment
+    ;
 
-outputAssignment: OUTPUT WS* IDENTIFIER WS* assignment?;
+outputAssignment
+    : OUTPUT WS* simpleIdentifier WS* assignment?
+    ;
 
-variableAssignment:
-	variableModifier? WS* IDENTIFIER WS* assignment?;
+variableAssignment
+    : variableModifier? WS* simpleIdentifier WS* assignment?
+    ;
 
-assignment: (ASSIGN WS* expression);
+assignment
+    : (ASSIGN WS* expression)
+    ;
 
-expression: INTEGER # integerExpression;
+expression
+    : INTEGER # integerExpression
+    ;
 
-variableModifier: CONST | VAR;
+variableModifier
+    : CONST | VAR
+    ;
+
+dependencyPathIdentifier
+    : simpleIdentifier (WS* DOT simpleIdentifier)* DOT
+    ;
+
+simpleIdentifier
+    : IDENTIFIER
+    ;
 
 IMPORT: 'import';
 
 ASSIGN: '=';
+
+DOT: '.';
 
 OUTPUT: 'output';
 
