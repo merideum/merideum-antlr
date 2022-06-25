@@ -2,9 +2,9 @@ grammar Merit;
 
 parse: block EOF;
 
-block: (importDependency)* WS* (statement)*;
+block: (importResource)* WS* (statement)*;
 
-importDependency: IMPORT WS* IDENTIFIER WS* COLON WS* (dependencyPathIdentifier)? (DEPENDENCY_NAME);
+importResource: IMPORT WS* IDENTIFIER WS* COLON WS* (resourcePathIdentifier)? (RESOURCE_NAME);
 
 statement
     : variableAssignment | outputAssignment
@@ -30,7 +30,7 @@ variableModifier
     : CONST | VAR
     ;
 
-dependencyPathIdentifier
+resourcePathIdentifier
     : simpleIdentifier (WS* DOT simpleIdentifier)* DOT
     ;
 
@@ -50,7 +50,7 @@ CONST: 'const';
 
 VAR: 'var';
 
-DEPENDENCY_NAME: (CAPITAL_LETTER) (LETTER | '_' | DIGIT)*;
+RESOURCE_NAME: (CAPITAL_LETTER) (LETTER | '_' | DIGIT)*;
 
 IDENTIFIER: (LETTER | '_') (LETTER | '_' | DIGIT)*;
 
