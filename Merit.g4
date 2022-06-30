@@ -7,7 +7,7 @@ block: (importResource)* WS* (statement)*;
 importResource: IMPORT WS* IDENTIFIER WS* COLON WS* (resourcePathIdentifier)? (RESOURCE_NAME);
 
 statement
-    : expression
+    : expression functionCall
     | variableAssignment
     | outputAssignment
     ;
