@@ -7,7 +7,9 @@ block: (importResource)* WS* (statement)*;
 importResource: IMPORT WS* IDENTIFIER WS* COLON WS* (resourcePathIdentifier)? (RESOURCE_NAME);
 
 statement
-    : variableAssignment | outputAssignment
+    : expression
+    | variableAssignment
+    | outputAssignment
     ;
 
 outputAssignment
@@ -24,6 +26,16 @@ assignment
 
 expression
     : INTEGER # integerExpression
+    | simpleIdentifier # simpleIdentifierExpression
+    | expression functionCall # functionCallExpression
+    ;
+
+functionCall
+    : DOT simpleIdentifier PAREN_L functionParameters? PAREN_R
+    ;
+
+functionParameters
+    : expression (COMMA WS* expression)?
     ;
 
 variableModifier
@@ -55,6 +67,12 @@ RESOURCE_NAME: (CAPITAL_LETTER) (LETTER | '_' | DIGIT)*;
 IDENTIFIER: (LETTER | '_') (LETTER | '_' | DIGIT)*;
 
 COLON: ':';
+
+COMMA: ',';
+
+PAREN_L: '(';
+
+PAREN_R: ')';
 
 CAPITAL_LETTER: [A-Z];
 
