@@ -25,9 +25,9 @@ assignment
     ;
 
 expression
-    : INTEGER # integerExpression
+    : expression functionCall # functionCallExpression
+    | INTEGER # integerExpression
     | simpleIdentifier # simpleIdentifierExpression
-    | expression functionCall # functionCallExpression
     ;
 
 functionCall
@@ -35,7 +35,7 @@ functionCall
     ;
 
 functionParameters
-    : expression (COMMA WS* expression)?
+    : expression (COMMA WS* expression)*?
     ;
 
 variableModifier
