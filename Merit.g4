@@ -7,7 +7,7 @@ block: (importResource)* WS* (statement)*;
 importResource: IMPORT WS* IDENTIFIER WS* COLON WS* (resourcePathIdentifier)? (RESOURCE_NAME);
 
 statement
-    : expression functionCall
+    : standaloneFunctionCall
     | variableAssignment
     | outputAssignment
     ;
@@ -28,6 +28,11 @@ expression
     : expression functionCall # functionCallExpression
     | INTEGER # integerExpression
     | simpleIdentifier # simpleIdentifierExpression
+    ;
+
+// A function call not used in an expression.
+standaloneFunctionCall
+    : expression functionCall
     ;
 
 functionCall
