@@ -38,3 +38,5 @@ out/
 
 ### ANTLR ###
 .antlr/
+gen/
+*.tokens
