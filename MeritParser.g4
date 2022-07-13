@@ -4,7 +4,19 @@ options {
     tokenVocab = 'MeritLexer';
 }
 
-parse: block EOF;
+parse: scriptDefinition EOF;
+
+scriptDefinition: scriptType WS* simpleIdentifier WS* scriptParameterBlock? CURLY_L WS* block WS* CURLY_R;
+
+scriptType: REQUEST | CONTRACT;
+
+scriptParameterBlock
+    : PAREN_L WS* scriptParameters? WS* PAREN_R
+    ;
+
+scriptParameters
+    : simpleIdentifier WS* typeDeclaration WS* (COMMA WS* simpleIdentifier WS* typeDeclaration)*?
+    ;
 
 block: (importResource)* WS* (statement)*;
 

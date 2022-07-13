@@ -2,6 +2,30 @@ lexer grammar MeritLexer;
 
 WS: [ \t\r\n]+ -> skip;
 
+REQUEST: 'request';
+
+CONTRACT: 'contract';
+
+TYPE_INT: 'int';
+
+TYPE_STRING: 'string';
+
+IDENTIFIER: (LETTER | '_') (LETTER | '_' | DIGIT)*;
+
+COLON: ':';
+
+COMMA: ',';
+
+PAREN_L: '(';
+
+PAREN_R: ')';
+
+CURLY_L: '{' -> pushMode(SCRIPT);
+
+mode SCRIPT;
+
+SC_WS: [ \t\r\n]+ -> skip;
+
 IMPORT: 'import';
 
 ASSIGN: '=';
@@ -16,23 +40,23 @@ CONST: 'const';
 
 VAR: 'var';
 
-TYPE_INT: 'int';
+SC_TYPE_INT: 'int' -> type(TYPE_INT);
 
-TYPE_STRING: 'string';
+SC_TYPE_STRING: 'string' -> type(TYPE_STRING);
 
 RESOURCE_NAME: (CAPITAL_LETTER) (LETTER | '_' | DIGIT)*;
 
-IDENTIFIER: (LETTER | '_') (LETTER | '_' | DIGIT)*;
+SC_IDENTIFIER: (LETTER | '_') (LETTER | '_' | DIGIT)* -> type(IDENTIFIER);
 
-COLON: ':';
+SC_COLON: ':' -> type(COLON);
 
-COMMA: ',';
+SC_COMMA: ',' -> type(COMMA);
 
-PAREN_L: '(';
+SC_PAREN_L: '(' -> type(PAREN_L);
 
-PAREN_R: ')';
+SC_PAREN_R: ')' -> type(PAREN_R);
 
-CURLY_R: '}';
+CURLY_R: '}' -> popMode, type(CURLY_R);
 
 CAPITAL_LETTER: [A-Z];
 
