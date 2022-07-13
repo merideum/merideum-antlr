@@ -27,7 +27,7 @@ variableDeclaration
     ;
 
 variableDeclarationAssignment
-    : variableModifier WS* simpleIdentifier WS* assignment
+    : variableModifier WS* simpleIdentifier WS* typeDeclaration? WS* assignment
     ;
 
 variableReassignment
