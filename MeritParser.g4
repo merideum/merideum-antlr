@@ -27,7 +27,7 @@ variableDeclaration
     ;
 
 variableDeclarationAssignment
-    : variableModifier WS* simpleIdentifier WS* assignment
+    : variableModifier WS* simpleIdentifier WS* typeDeclaration? WS* assignment
     ;
 
 variableReassignment
@@ -39,9 +39,9 @@ assignment
     ;
 
 expression
-    : expression functionCall                  # functionCallExpression
-    | simpleIdentifier                         # simpleIdentifierExpression
-    | INTEGER                                  # integerExpression
+    : expression functionCall                   # functionCallExpression
+    | simpleIdentifier                          # simpleIdentifierExpression
+    | MINUS? INTEGER                            # integerExpression
     | QUOTE_DOUBLE stringContent* QUOTE_DOUBLE  # stringExpression
     ;
 

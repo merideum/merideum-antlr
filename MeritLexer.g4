@@ -6,6 +6,8 @@ IMPORT: 'import';
 
 ASSIGN: '=';
 
+MINUS: '-';
+
 DOT: '.';
 
 OUTPUT: 'output';
@@ -59,6 +61,8 @@ E_DOT: '.' -> type(DOT);
 E_RESOURCE_NAME: (CAPITAL_LETTER) (LETTER | '_' | DIGIT)* -> type(RESOURCE_NAME);
 
 E_IDENTIFIER: (LETTER | '_') (LETTER | '_' | DIGIT)* -> type(IDENTIFIER);
+
+E_MINUS: '-' -> type(MINUS);
 
 E_COLON: ':' -> type(COLON);
 
