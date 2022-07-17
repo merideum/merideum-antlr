@@ -10,6 +10,8 @@ TYPE_INT: 'int';
 
 TYPE_STRING: 'string';
 
+TYPE_OBJECT: 'object';
+
 IDENTIFIER: (LETTER | '_') (LETTER | '_' | DIGIT)*;
 
 COLON: ':';
@@ -44,6 +46,8 @@ SC_TYPE_INT: 'int' -> type(TYPE_INT);
 
 SC_TYPE_STRING: 'string' -> type(TYPE_STRING);
 
+SC_TYPE_OBJECT: 'object' -> type(TYPE_OBJECT);
+
 RESOURCE_NAME: (CAPITAL_LETTER) (LETTER | '_' | DIGIT)*;
 
 SC_IDENTIFIER: (LETTER | '_') (LETTER | '_' | DIGIT)* -> type(IDENTIFIER);
@@ -55,6 +59,8 @@ SC_COMMA: ',' -> type(COMMA);
 SC_PAREN_L: '(' -> type(PAREN_L);
 
 SC_PAREN_R: ')' -> type(PAREN_R);
+
+SC_CURLY_L: '{' -> pushMode(SCRIPT);
 
 CURLY_R: '}' -> popMode, type(CURLY_R);
 
