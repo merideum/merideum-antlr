@@ -27,6 +27,7 @@ statement
     | variableDeclaration
     | variableDeclarationAssignment
     | variableReassignment
+    | objectFieldAssignment
     | outputAssignment
     ;
 
@@ -44,6 +45,10 @@ variableDeclarationAssignment
 
 variableReassignment
     : simpleIdentifier WS* assignment
+    ;
+
+objectFieldAssignment
+    : variableName=simpleIdentifier WS* DOT fieldName=simpleIdentifier WS* typeDeclaration? WS* assignment
     ;
 
 assignment
