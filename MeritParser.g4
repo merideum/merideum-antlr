@@ -27,6 +27,7 @@ statement
     | variableDeclaration
     | variableDeclarationAssignment
     | variableReassignment
+    | objectFieldAssignment
     | outputAssignment
     ;
 
@@ -46,15 +47,27 @@ variableReassignment
     : simpleIdentifier WS* assignment
     ;
 
+objectFieldAssignment
+    : variableName=simpleIdentifier WS* DOT fieldName=simpleIdentifier WS* typeDeclaration? WS* assignment
+    ;
+
 assignment
     : (ASSIGN WS* expression)
     ;
 
 expression
-    : expression functionCall                   # functionCallExpression
-    | simpleIdentifier                          # simpleIdentifierExpression
-    | MINUS? INTEGER                            # integerExpression
-    | QUOTE_DOUBLE stringContent* QUOTE_DOUBLE  # stringExpression
+    // Ex: person.name
+    : expression WS* DOT simpleIdentifier           # objectFieldReferenceExpression
+    // Ex: "asdf".length()
+    | expression functionCall                       # functionCallExpression
+    // Ex: person
+    | simpleIdentifier                              # simpleIdentifierExpression
+    // Ex: { name: string = "Foo" }
+    | SC_CURLY_L WS* objectFields? WS* CURLY_R      # objectExpression
+    // Ex: 1337
+    | MINUS? INTEGER                                # integerExpression
+    // Ex: "Hello World!"
+    | QUOTE_DOUBLE stringContent* QUOTE_DOUBLE      # stringExpression
     ;
 
 functionCall
@@ -78,7 +91,16 @@ simpleIdentifier
     ;
 
 typeDeclaration
-    : COLON WS* type=(TYPE_INT | TYPE_STRING);
+    : COLON WS* type=(TYPE_INT | TYPE_STRING | TYPE_OBJECT)
+    ;
+
+objectFields
+    : objectField WS* (COMMA WS* objectField WS*)*?
+    ;
+
+objectField
+    : simpleIdentifier WS* typeDeclaration? WS* assignment
+    ;
 
 stringContent
     : DOLLAR_CURLY_L expression CURLY_R # embeddedExpression
