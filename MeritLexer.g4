@@ -36,7 +36,7 @@ MINUS: '-';
 
 DOT: '.';
 
-OUTPUT: 'output';
+RETURN: 'return';
 
 CONST: 'const';
 
