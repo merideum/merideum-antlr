@@ -28,31 +28,31 @@ statement
     | variableDeclarationAssignment
     | variableReassignment
     | objectFieldAssignment
-    | outputAssignment
+    | returnStatement
     ;
 
-outputAssignment
-    : OUTPUT WS* simpleIdentifier WS* assignment?
+returnStatement
+    : RETURN WS* expression WS*
     ;
 
 variableDeclaration
-    : VAR WS* simpleIdentifier WS* typeDeclaration
+    : VAR WS* simpleIdentifier WS* typeDeclaration WS*
     ;
 
 variableDeclarationAssignment
-    : variableModifier WS* simpleIdentifier WS* typeDeclaration? WS* assignment
+    : variableModifier WS* simpleIdentifier WS* typeDeclaration? WS* assignment WS*
     ;
 
 variableReassignment
-    : simpleIdentifier WS* assignment
+    : simpleIdentifier WS* assignment WS*
     ;
 
 objectFieldAssignment
-    : variableName=simpleIdentifier WS* DOT fieldName=simpleIdentifier WS* typeDeclaration? WS* assignment
+    : variableName=simpleIdentifier WS* DOT fieldName=simpleIdentifier WS* typeDeclaration? WS* assignment WS*
     ;
 
 assignment
-    : (ASSIGN WS* expression)
+    : (ASSIGN WS* expression) WS*
     ;
 
 expression
