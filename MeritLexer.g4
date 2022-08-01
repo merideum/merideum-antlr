@@ -22,6 +22,10 @@ PAREN_L: '(';
 
 PAREN_R: ')';
 
+BRACKET_L: '[';
+
+BRACKET_R: ']';
+
 CURLY_L: '{' -> pushMode(SCRIPT);
 
 mode SCRIPT;
@@ -63,6 +67,10 @@ SC_PAREN_R: ')' -> type(PAREN_R);
 SC_CURLY_L: '{' -> pushMode(SCRIPT);
 
 CURLY_R: '}' -> popMode, type(CURLY_R);
+
+SC_BRACKET_L: '[' -> type(BRACKET_L);
+
+SC_BRACKET_R: ']' -> type(BRACKET_R);
 
 CAPITAL_LETTER: [A-Z];
 

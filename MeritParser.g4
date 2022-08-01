@@ -18,7 +18,7 @@ scriptParameters
     : simpleIdentifier WS* typeDeclaration WS* (COMMA WS* simpleIdentifier WS* typeDeclaration)*?
     ;
 
-block: (importResource)* WS* (statement)*;
+block: (importResource)* WS* (statement WS*)*;
 
 importResource: IMPORT WS* IDENTIFIER WS* COLON WS* (resourcePathIdentifier)? (RESOURCE_NAME);
 
@@ -28,46 +28,54 @@ statement
     | variableDeclarationAssignment
     | variableReassignment
     | objectFieldAssignment
+    | elementIndexAssignment
     | returnStatement
     ;
 
 returnStatement
-    : RETURN WS* expression WS*
+    : RETURN WS* expression
     ;
 
 variableDeclaration
-    : VAR WS* simpleIdentifier WS* typeDeclaration WS*
+    : VAR WS* simpleIdentifier WS* typeDeclaration
     ;
 
 variableDeclarationAssignment
-    : variableModifier WS* simpleIdentifier WS* typeDeclaration? WS* assignment WS*
+    : variableModifier WS* simpleIdentifier WS* typeDeclaration? WS* assignment
     ;
 
 variableReassignment
-    : simpleIdentifier WS* assignment WS*
+    : simpleIdentifier WS* assignment
     ;
 
 objectFieldAssignment
-    : variableName=simpleIdentifier WS* DOT fieldName=simpleIdentifier WS* typeDeclaration? WS* assignment WS*
+    : variableName=simpleIdentifier WS* DOT fieldName=simpleIdentifier WS* typeDeclaration? WS* assignment
+    ;
+
+elementIndexAssignment
+    : simpleIdentifier WS* elementIndex WS* assignment
     ;
 
 assignment
-    : (ASSIGN WS* expression) WS*
+    : ASSIGN WS* expression WS*
     ;
 
 expression
     // Ex: person.name
-    : expression WS* DOT simpleIdentifier           # objectFieldReferenceExpression
+    : expression WS* DOT simpleIdentifier                   # objectFieldReferenceExpression
     // Ex: "asdf".length()
-    | expression functionCall                       # functionCallExpression
+    | expression functionCall                               # functionCallExpression
     // Ex: person
-    | simpleIdentifier                              # simpleIdentifierExpression
+    | simpleIdentifier                                      # simpleIdentifierExpression
     // Ex: { name: string = "Foo" }
-    | SC_CURLY_L WS* objectFields? WS* CURLY_R      # objectExpression
+    | SC_CURLY_L WS* objectFields? WS* CURLY_R              # objectExpression
+    | BRACKET_L WS* listElementAssignments? WS* BRACKET_R   # listExpression
     // Ex: 1337
-    | MINUS? INTEGER                                # integerExpression
+    | MINUS? INTEGER                                        # integerExpression
     // Ex: "Hello World!"
-    | QUOTE_DOUBLE stringContent* QUOTE_DOUBLE      # stringExpression
+    | QUOTE_DOUBLE stringContent* QUOTE_DOUBLE              # stringExpression
+    // Index for a list element or an object field
+    | simpleIdentifier WS* elementIndex WS*                 # elementIndexExpression
     ;
 
 functionCall
@@ -91,7 +99,25 @@ simpleIdentifier
     ;
 
 typeDeclaration
-    : COLON WS* type=(TYPE_INT | TYPE_STRING | TYPE_OBJECT)
+    : COLON WS* type
+    ;
+
+type
+    : basicType
+    | listType
+    ;
+
+listType
+    : BRACKET_L WS* innerType WS* BRACKET_R
+    ;
+
+innerType
+    : basicType
+    | listType
+    ;
+
+basicType
+    : TYPE_INT | TYPE_STRING | TYPE_OBJECT
     ;
 
 objectFields
@@ -100,6 +126,18 @@ objectFields
 
 objectField
     : simpleIdentifier WS* typeDeclaration? WS* assignment
+    ;
+
+listElementAssignments
+    : listElementAssignment WS* (COMMA WS* listElementAssignment WS*)*?
+    ;
+
+listElementAssignment
+    : expression
+    ;
+
+elementIndex
+    : BRACKET_L WS* expression WS* BRACKET_R
     ;
 
 stringContent
