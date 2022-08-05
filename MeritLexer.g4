@@ -8,9 +8,15 @@ CONTRACT: 'contract';
 
 TYPE_INT: 'int';
 
+TYPE_LIST_INT: BRACKET_L 'int' BRACKET_R;
+
 TYPE_STRING: 'string';
 
+TYPE_LIST_STRING: BRACKET_L 'string' BRACKET_R;
+
 TYPE_OBJECT: 'object';
+
+TYPE_LIST_OBJECT: BRACKET_L 'object' BRACKET_R;
 
 IDENTIFIER: (LETTER | '_') (LETTER | '_' | DIGIT)*;
 
@@ -21,6 +27,10 @@ COMMA: ',';
 PAREN_L: '(';
 
 PAREN_R: ')';
+
+BRACKET_L: '[';
+
+BRACKET_R: ']';
 
 CURLY_L: '{' -> pushMode(SCRIPT);
 
@@ -44,9 +54,15 @@ VAR: 'var';
 
 SC_TYPE_INT: 'int' -> type(TYPE_INT);
 
+SC_TYPE_LIST_INT: BRACKET_L 'int' BRACKET_R -> type(TYPE_LIST_INT);
+
 SC_TYPE_STRING: 'string' -> type(TYPE_STRING);
 
+SC_TYPE_LIST_STRING: BRACKET_L 'string' BRACKET_R -> type(TYPE_LIST_STRING);
+
 SC_TYPE_OBJECT: 'object' -> type(TYPE_OBJECT);
+
+SC_TYPE_LIST_OBJECT: BRACKET_L 'object' BRACKET_R -> type(TYPE_LIST_OBJECT);
 
 RESOURCE_NAME: (CAPITAL_LETTER) (LETTER | '_' | DIGIT)*;
 
@@ -63,6 +79,10 @@ SC_PAREN_R: ')' -> type(PAREN_R);
 SC_CURLY_L: '{' -> pushMode(SCRIPT);
 
 CURLY_R: '}' -> popMode, type(CURLY_R);
+
+SC_BRACKET_L: '[' -> type(BRACKET_L);
+
+SC_BRACKET_R: ']' -> type(BRACKET_R);
 
 CAPITAL_LETTER: [A-Z];
 

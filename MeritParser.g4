@@ -18,7 +18,7 @@ scriptParameters
     : simpleIdentifier WS* typeDeclaration WS* (COMMA WS* simpleIdentifier WS* typeDeclaration)*?
     ;
 
-block: (importResource)* WS* (statement)*;
+block: (importResource)* WS* (statement WS*)*;
 
 importResource: IMPORT WS* IDENTIFIER WS* COLON WS* (resourcePathIdentifier)? (RESOURCE_NAME);
 
@@ -32,42 +32,44 @@ statement
     ;
 
 returnStatement
-    : RETURN WS* expression WS*
+    : RETURN WS* expression
     ;
 
 variableDeclaration
-    : VAR WS* simpleIdentifier WS* typeDeclaration WS*
+    : VAR WS* simpleIdentifier WS* typeDeclaration
     ;
 
 variableDeclarationAssignment
-    : variableModifier WS* simpleIdentifier WS* typeDeclaration? WS* assignment WS*
+    : variableModifier WS* simpleIdentifier WS* typeDeclaration? WS* assignment
     ;
 
 variableReassignment
-    : simpleIdentifier WS* assignment WS*
+    : simpleIdentifier WS* assignment
     ;
 
 objectFieldAssignment
-    : variableName=simpleIdentifier WS* DOT fieldName=simpleIdentifier WS* typeDeclaration? WS* assignment WS*
+    : variableName=simpleIdentifier WS* DOT fieldName=simpleIdentifier WS* typeDeclaration? WS* assignment
     ;
 
 assignment
-    : (ASSIGN WS* expression) WS*
+    : ASSIGN WS* expression WS*
     ;
 
 expression
-    // Ex: person.name
-    : expression WS* DOT simpleIdentifier           # objectFieldReferenceExpression
-    // Ex: "asdf".length()
-    | expression functionCall                       # functionCallExpression
-    // Ex: person
-    | simpleIdentifier                              # simpleIdentifierExpression
-    // Ex: { name: string = "Foo" }
-    | SC_CURLY_L WS* objectFields? WS* CURLY_R      # objectExpression
+    : SC_CURLY_L WS* objectFields? WS* CURLY_R              # objectExpression
+    | BRACKET_L WS* listElementAssignments? WS* BRACKET_R   # listExpression
     // Ex: 1337
-    | MINUS? INTEGER                                # integerExpression
+    | MINUS? INTEGER                                        # integerExpression
     // Ex: "Hello World!"
-    | QUOTE_DOUBLE stringContent* QUOTE_DOUBLE      # stringExpression
+    | QUOTE_DOUBLE stringContent* QUOTE_DOUBLE              # stringExpression
+    | value=expression BRACKET_L WS* index=expression WS* BRACKET_R     # elementExpression
+    // Ex: person.name
+    | expression WS* DOT simpleIdentifier                   # objectFieldReferenceExpression
+    // Ex: "asdf".length()
+    | expression functionCall                               # functionCallExpression
+    // Ex: person
+    | simpleIdentifier                                      # simpleIdentifierExpression
+    // Ex: { name: string = "Foo" }
     ;
 
 functionCall
@@ -91,7 +93,22 @@ simpleIdentifier
     ;
 
 typeDeclaration
-    : COLON WS* type=(TYPE_INT | TYPE_STRING | TYPE_OBJECT)
+    : COLON WS* type
+    ;
+
+type
+    : basicType
+    | listType
+    ;
+
+listType
+    : TYPE_LIST_INT
+    | TYPE_LIST_STRING
+    | TYPE_LIST_OBJECT
+    ;
+
+basicType
+    : TYPE_INT | TYPE_STRING | TYPE_OBJECT
     ;
 
 objectFields
@@ -100,6 +117,14 @@ objectFields
 
 objectField
     : simpleIdentifier WS* typeDeclaration? WS* assignment
+    ;
+
+listElementAssignments
+    : listElementAssignment WS* (COMMA WS* listElementAssignment WS*)*?
+    ;
+
+listElementAssignment
+    : expression
     ;
 
 stringContent
