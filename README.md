@@ -1,7 +1,6 @@
-# merit
+# Merideum Language
 
-ANTLR grammars for the Merit language.
-Merit is used to power interaction with a Merideum server.
+ANTLR grammars for the Merideum scripting language. These grammars are used for Merideum implementations.
 
 # Getting Started
 
