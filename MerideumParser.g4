@@ -1,7 +1,7 @@
-parser grammar MeritParser;
+parser grammar MerideumParser;
 
 options {
-    tokenVocab = 'MeritLexer';
+    tokenVocab = 'Lexer';
 }
 
 parse: scriptDefinition EOF;
@@ -28,6 +28,7 @@ statement
     | variableDeclarationAssignment
     | variableReassignment
     | objectFieldAssignment
+    | elementIndexAssignment
     | returnStatement
     ;
 
@@ -51,25 +52,30 @@ objectFieldAssignment
     : variableName=simpleIdentifier WS* DOT fieldName=simpleIdentifier WS* typeDeclaration? WS* assignment
     ;
 
+elementIndexAssignment
+    : simpleIdentifier WS* elementIndex WS* assignment
+    ;
+
 assignment
     : ASSIGN WS* expression WS*
     ;
 
 expression
-    : SC_CURLY_L WS* objectFields? WS* CURLY_R              # objectExpression
-    | BRACKET_L WS* listElementAssignments? WS* BRACKET_R   # listExpression
-    // Ex: 1337
-    | MINUS? INTEGER                                        # integerExpression
-    // Ex: "Hello World!"
-    | QUOTE_DOUBLE stringContent* QUOTE_DOUBLE              # stringExpression
-    | value=expression BRACKET_L WS* index=expression WS* BRACKET_R     # elementExpression
     // Ex: person.name
-    | expression WS* DOT simpleIdentifier                   # objectFieldReferenceExpression
+    : expression WS* DOT simpleIdentifier                   # objectFieldReferenceExpression
     // Ex: "asdf".length()
     | expression functionCall                               # functionCallExpression
     // Ex: person
     | simpleIdentifier                                      # simpleIdentifierExpression
     // Ex: { name: string = "Foo" }
+    | SC_CURLY_L WS* objectFields? WS* CURLY_R              # objectExpression
+    | BRACKET_L WS* listElementAssignments? WS* BRACKET_R   # listExpression
+    // Ex: 1337
+    | MINUS? INTEGER                                        # integerExpression
+    // Ex: "Hello World!"
+    | QUOTE_DOUBLE stringContent* QUOTE_DOUBLE              # stringExpression
+    // Index for a list element or an object field
+    | simpleIdentifier WS* elementIndex WS*                 # elementIndexExpression
     ;
 
 functionCall
@@ -102,9 +108,12 @@ type
     ;
 
 listType
-    : TYPE_LIST_INT
-    | TYPE_LIST_STRING
-    | TYPE_LIST_OBJECT
+    : BRACKET_L WS* innerType WS* BRACKET_R
+    ;
+
+innerType
+    : basicType
+    | listType
     ;
 
 basicType
@@ -125,6 +134,10 @@ listElementAssignments
 
 listElementAssignment
     : expression
+    ;
+
+elementIndex
+    : BRACKET_L WS* expression WS* BRACKET_R
     ;
 
 stringContent

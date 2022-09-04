@@ -1,4 +1,4 @@
-lexer grammar MeritLexer;
+lexer grammar MerideumLexer;
 
 WS: [ \t\r\n]+ -> skip;
 
@@ -8,15 +8,9 @@ CONTRACT: 'contract';
 
 TYPE_INT: 'int';
 
-TYPE_LIST_INT: BRACKET_L 'int' BRACKET_R;
-
 TYPE_STRING: 'string';
 
-TYPE_LIST_STRING: BRACKET_L 'string' BRACKET_R;
-
 TYPE_OBJECT: 'object';
-
-TYPE_LIST_OBJECT: BRACKET_L 'object' BRACKET_R;
 
 IDENTIFIER: (LETTER | '_') (LETTER | '_' | DIGIT)*;
 
@@ -54,15 +48,9 @@ VAR: 'var';
 
 SC_TYPE_INT: 'int' -> type(TYPE_INT);
 
-SC_TYPE_LIST_INT: BRACKET_L 'int' BRACKET_R -> type(TYPE_LIST_INT);
-
 SC_TYPE_STRING: 'string' -> type(TYPE_STRING);
 
-SC_TYPE_LIST_STRING: BRACKET_L 'string' BRACKET_R -> type(TYPE_LIST_STRING);
-
 SC_TYPE_OBJECT: 'object' -> type(TYPE_OBJECT);
-
-SC_TYPE_LIST_OBJECT: BRACKET_L 'object' BRACKET_R -> type(TYPE_LIST_OBJECT);
 
 RESOURCE_NAME: (CAPITAL_LETTER) (LETTER | '_' | DIGIT)*;
 
