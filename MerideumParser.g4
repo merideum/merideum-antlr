@@ -1,7 +1,7 @@
 parser grammar MerideumParser;
 
 options {
-    tokenVocab = 'Lexer';
+    tokenVocab = 'MerideumLexer';
 }
 
 parse: scriptDefinition EOF;
