@@ -6,16 +6,16 @@ options {
 
 parse: scriptDefinition EOF;
 
-scriptDefinition: scriptType WS* simpleIdentifier WS* scriptParameterBlock? CURLY_L WS* block WS* CURLY_R;
+scriptDefinition: scriptType WS* simpleIdentifier WS* scriptParameters? CURLY_L WS* block WS* CURLY_R;
 
 scriptType: REQUEST | CONTRACT;
 
-scriptParameterBlock
-    : PAREN_L WS* scriptParameters? WS* PAREN_R
+scriptParameters
+    : PAREN_L WS* scriptParameter WS* (COMMA WS* scriptParameter)*? WS* PAREN_R
     ;
 
-scriptParameters
-    : simpleIdentifier WS* typeDeclaration WS* (COMMA WS* simpleIdentifier WS* typeDeclaration)*?
+scriptParameter
+    : simpleIdentifier WS* typeDeclaration
     ;
 
 block: (importResource)* WS* (statement WS*)*;
