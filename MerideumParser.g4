@@ -116,7 +116,7 @@ objectFields
     ;
 
 objectField
-    : simpleIdentifier WS* typeDeclaration? WS* assignment
+    : simpleIdentifier WS* typeDeclaration? WS* assignment?
     ;
 
 listElementAssignments
